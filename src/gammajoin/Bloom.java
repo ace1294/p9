@@ -9,6 +9,10 @@ package gammajoin;
  *
  * @author Jason
  */
-public class Bloom {
+public class Bloom extends Thread {
+    
+    Bloom () {
+        
+    }
     
 }

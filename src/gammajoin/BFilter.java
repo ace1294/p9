@@ -11,4 +11,12 @@ package gammajoin;
  */
 public class BFilter extends Thread {
     
+    BFilter() {
+        
+    }
+    
+    public void run() {
+        
+    }
+    
 }
