@@ -5,14 +5,15 @@
  */
 package gammajoin;
 import basicConnector.Connector;
-import basicConnector.ReadEnd;
 import basicConnector.WriteEnd;
 import gammaSupport.Relation;
 import gammaSupport.ThreadList;
-import java.io.File;
-import java.util.Scanner;
 import java.util.StringTokenizer;
 import gammaSupport.Tuple;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.util.logging.*;
 
 /**
  *
@@ -20,45 +21,55 @@ import gammaSupport.Tuple;
  */
 public class ReadRelation extends Thread {
     
-    WriteEnd out;
-    ReadEnd in;
-    Connector c;
-    File f;
+    private BufferedReader inReader;
+    private WriteEnd outWriteEnd;
+    private Relation r;
     
-    public ReadRelation(String fileName, Connector con) {
-        this.c = con;
-        this.f = new File(fileName);
-        this.out = con.getWriteEnd();
+    public ReadRelation(String fileName, Connector con) throws Exception {
+        try {
+            this.inReader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName)));
+            String relationString = this.inReader.readLine();
+            StringTokenizer st = new StringTokenizer(relationString);
+            this.r = new Relation(fileName, st.countTokens());
+            
+            while(st.hasMoreTokens()){
+                r.addField(st.nextToken());
+            }
+            
+            con.setRelation(r);
+            
+            // Dashed blank line
+            this.inReader.readLine();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
         
-        //System.out.println(this);
-        // It says in the project we need to do this but it looks like this crashes it?
-        //ThreadList.add(this);
+        
+        
+        this.outWriteEnd = con.getWriteEnd();
+        ThreadList.add(this);
     }
 
     @Override
     public void run() {
         try {
-            String entireFileContent = new Scanner(this.f).useDelimiter("\\Z").next();
-            StringTokenizer stt = new StringTokenizer(entireFileContent,"\n");
-            String relationString = stt.nextToken();
-            StringTokenizer relationTokenizer = new StringTokenizer(relationString," ");
-            Relation r = new Relation(relationString, relationTokenizer.countTokens() - 1);
-            
-            this.c.setRelation(r);
-            
-            // Skip this line
-            stt.nextToken();
-            while (stt.hasMoreTokens()){
-                String token = stt.nextToken();
-                Tuple t = Tuple.makeTupleFromFileData(r, token);
-                
-                this.out.putNextTuple(t);
-                System.out.println(t.toString());
+            String input;
+            Tuple t;
+            // Parse rows into records
+            while(true) {
+                input = this.inReader.readLine();
+                if(input == null || input.equals("")){
+                    // No more data to consume
+                    break;
+                }
+                t = Tuple.makeTupleFromFileData(r, input);
+                this.outWriteEnd.putNextTuple(t);
             }
-        } catch (Exception e) {
-            System.err.println(this.getClass().getName() + e);
+            this.outWriteEnd.close();
+        }catch (Exception e) {
+            Logger.getLogger(ReadRelation.class.getName()).log(Level.SEVERE, null, e);
         }
     }
-    
     
 }

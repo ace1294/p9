@@ -20,7 +20,12 @@ public class ThreadList implements GammaConstants {
 
     public static void add(Thread t) {
         if (t == null) {
+            ReportError.msg("thread is null");
+            System.exit(1);
+        }
+        else if (tl == null) {
             ReportError.msg("you forgot to call ThreadList.init()!");
+            System.exit(1);
         }
         tl.add(t);
         if (startNAdd) {
