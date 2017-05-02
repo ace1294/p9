@@ -25,13 +25,11 @@ public class HJoin extends Thread {
     private final int joinKey1;
     private final int joinKey2;
     
-    private final Relation r;
+    private Relation relationValue;
     
     private final Hashtable<String, Tuple> table;
     
     public HJoin(Connector in1, Connector in2, int jKey1, int jKey2, Connector out) {
-        
-        
         
         this.in1ReadEnd = in1.getReadEnd();
         this.in2ReadEnd = in2.getReadEnd();
@@ -39,8 +37,8 @@ public class HJoin extends Thread {
         this.joinKey2 = jKey2;
         this.outWriteEnd = out.getWriteEnd();
         
-        this.r = Relation.join(in1.getRelation(), in2.getRelation(), this.joinKey1, this.joinKey2);
-        this.outWriteEnd.setRelation(r);
+        this.relationValue = Relation.join(in1.getRelation(), in2.getRelation(), this.joinKey1, this.joinKey2);
+        this.outWriteEnd.setRelation(relationValue);
         
         this.table = new Hashtable<String, Tuple>();
         

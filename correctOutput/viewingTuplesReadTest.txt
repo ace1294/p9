@@ -1,7 +1,25 @@
-CLIENTNO                         PROPERTYNO                               VIEWDATE                         KOMMENT                      
--------------------------------- ---------------------------------------- -------------------------------- ---------------------------- 
-CR56                             PA14                                     24-MAY-04                        too_small                    
-CR76                             PG4                                      20-APR-04                        too_remote                   
-CR56                             PG4                                      26-MAY-04                        _                            
-CR62                             PA14                                     14-MAY-04                        no_dining_room               
-CR56                             PG36                                     28-APR-04                        _                            
+CLIENTNO = CR56
+PROPERTYNO = PA14
+VIEWDATE = 24-MAY-04
+KOMMENT = too_small
+
+CLIENTNO = CR76
+PROPERTYNO = PG4
+VIEWDATE = 20-APR-04
+KOMMENT = too_remote
+
+CLIENTNO = CR56
+PROPERTYNO = PG4
+VIEWDATE = 26-MAY-04
+KOMMENT = _
+
+CLIENTNO = CR62
+PROPERTYNO = PA14
+VIEWDATE = 14-MAY-04
+KOMMENT = no_dining_room
+
+CLIENTNO = CR56
+PROPERTYNO = PG36
+VIEWDATE = 28-APR-04
+KOMMENT = _
+
