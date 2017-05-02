@@ -3,74 +3,88 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gammaJoin;
+package gammajoin;
 
 import basicConnector.*;
 import gammaSupport.*;
+import java.io.File;
 import java.util.Hashtable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  *
- * @author terriBoose
+ * @author Jason
  */
-public class HJoin extends Thread{
+public class HJoin extends Thread {
     
-    private ReadEnd in1;
-    private ReadEnd in2;
-    private WriteEnd out;
-    private int key1;
-    private int key2;
+    
+    private ReadEnd in1ReadEnd;
+    private ReadEnd in2ReadEnd;
+    private WriteEnd outWriteEnd;
+    private int joinKey1;
+    private int joinKey2;
+    
     private Relation r;
     
     private Hashtable<String, Tuple> table;
     
-    public HJoin(Connector c1, Connector c2, int jk1, int jk2, Connector o) {
-        this.in1 = c1.getReadEnd();
-        this.in2 = c2.getReadEnd();
-        this.key1 = jk1;
-        this.key2 = jk2;
-        this.out = o.getWriteEnd();
+    public HJoin(Connector in1, Connector in2, int jKey1, int jKey2, Connector out) {
         
-        this.r = Relation.join(c1.getRelation(), c2.getRelation(), this.key1, this.key2);
-        out.setRelation(r);
         
-        table = new Hashtable<String, Tuple>();
+        
+        this.in1ReadEnd = in1.getReadEnd();
+        this.in2ReadEnd = in2.getReadEnd();
+        this.joinKey1 = jKey1;
+        this.joinKey2 = jKey2;
+        this.outWriteEnd = out.getWriteEnd();
+        
+        this.r = Relation.join(in1.getRelation(), in2.getRelation(), this.joinKey1, this.joinKey2);
+        this.outWriteEnd.setRelation(r);
+        
+        this.table = new Hashtable<String, Tuple>();
         
         ThreadList.add(this);
     }
     
-    public void run () {
+    /*
+    read all of stream A into a main memory hash table
+    read B stream one tuple at a time; 
+    hash join key of B’s tuple and join it to all A tuple’s with the same join key
+    linear algorithm in that each A,B tuples is read only once
+    */
+    @Override
+    public void run() {
         try {
             
-            
-            Tuple t1 = in1.getNextTuple();
+            // Read all of input 1 into table
+            Tuple t1 = this.in1ReadEnd.getNextTuple();
             while(true){
-                table.put(t1.get(key1), t1);
-                t1 = in1.getNextTuple();
+                table.put(t1.get(this.joinKey1), t1);
+                t1 = this.in1ReadEnd.getNextTuple();
                 if(t1 == null)
                 	break;
             }
             
-            
-            Tuple t2 = in2.getNextTuple();
+            // Read all of input 2
+            Tuple t2 = this.in2ReadEnd.getNextTuple();
             while(true){
-                t1 = table.get(t2.get(key2));
+                t1 = table.get(t2.get(this.joinKey2));
                 
+                // If there's a match between join keys, output joined
                 if(t1 != null){
-                    Tuple t_out = Tuple.join(t1, t2, key1, key2);
-                    out.putNextTuple(t_out);
+                    Tuple t_out = Tuple.join(t1, t2, this.joinKey1, this.joinKey2);
+                    this.outWriteEnd.putNextTuple(t_out);
                 }
-                t2  = in2.getNextTuple();
+                t2  = this.in2ReadEnd.getNextTuple();
                 if(t2 == null)
                 	break;
             }
-            out.close();
+            this.outWriteEnd.close();
         }
         catch (Exception ex) {
             Logger.getLogger(HJoin.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+        } 
     }
+    
 }
