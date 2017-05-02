@@ -17,4 +17,8 @@ public interface GammaConstants {
     public static int mapSize = 7;              // number of hash bits
     public static String Rel = "RelationData/"; // directory in which to find base relations; used in ReadRelation
     
+    public static String tablesPath = "tables/";
+    public static String correctOutputPath = "correctOutput/";
+    public static String testOutputPath = "testOutput/";
+    
 }

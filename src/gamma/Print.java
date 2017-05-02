@@ -5,8 +5,7 @@
 
 package gamma;
 
-import basicConnector.Connector;
-import basicConnector.ReadEnd;
+import basicConnector.*;
 import gammaSupport.*;
 
 /**

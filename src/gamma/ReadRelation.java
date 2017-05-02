@@ -17,11 +17,13 @@ import java.io.*;
 public class ReadRelation extends Thread {
     
     private BufferedReader inReader;
-    private final WriteEnd outWriteEnd;
+    private WriteEnd outWriteEnd;
     private Relation r;
     
     public ReadRelation(String fileName, Connector con) throws Exception {
         try {
+            this.outWriteEnd = con.getWriteEnd();
+            
             this.inReader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName)));
             String relationString = this.inReader.readLine();
             StringTokenizer st = new StringTokenizer(relationString);
@@ -36,13 +38,9 @@ public class ReadRelation extends Thread {
             // Dashed blank line
             this.inReader.readLine();
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
+            ReportError.msg(this.getClass().getName() + " " + e);
         }
         
-        
-        
-        this.outWriteEnd = con.getWriteEnd();
         ThreadList.add(this);
     }
 
@@ -60,9 +58,10 @@ public class ReadRelation extends Thread {
                 }
                 t = Tuple.makeTupleFromFileData(r, input);
                 this.outWriteEnd.putNextTuple(t);
+//                System.out.println("gamma.ReadRelation.run()");
             }
             this.outWriteEnd.close();
-        }catch (Exception e) {
+        } catch (Exception e) {
             ReportError.msg(this.getClass().getName() + " " + e);
         }
     }

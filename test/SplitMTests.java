@@ -19,19 +19,24 @@ import org.junit.Test;
  */
 public class SplitMTests {
     
-    @Test
-    public void SplitMTest() throws Exception {
-            Utility.redirectStdOut("out.txt");
+    public void SplitMTest(int i) throws Exception {
+        String correct = GammaConstants.correctOutputPath + "splitMOut" + i + ".txt";
+        String test = GammaConstants.testOutputPath + "splitMOut" + i + ".txt";
+        
+        Utility.redirectStdOut(test);
         ThreadList.init();
 
+        /*
+        ttttttt
+        fffffff
+        tftftft
+        ttffttf
+        */
         String bmap = "tttttttffffffftftftftttffttf";
-        // ttttttt
-        // fffffff
-        // tftftft
-        // ttffttf
-
+        
         Connector in = new Connector("input");
         in.setRelation(Relation.dummy);
+        in.getWriteEnd().putNextString(bmap);
         Connector[] outs = new Connector[4];
         outs[0] = new Connector("out0");
         outs[1] = new Connector("out1");
@@ -46,12 +51,33 @@ public class SplitMTests {
         Sink s3 = new Sink(outs[3]);
         
         PrintMap p = new PrintMap(outs[i]);
-        
-        in.getWriteEnd().putNextString(bmap);
-        
         ThreadList.run(p);
 
-        Utility.validate(outDir+"splitMOut"+i+".txt", correctDir+"splitMOut"+i+".txt",false);
+        Utility.validate(test, correct,false);
     }
+    
+    @Test
+    public void SplitMTest0() throws Exception {
+        SplitMTest(0);
+        SplitMTest(1);
+        SplitMTest(2);
+        SplitMTest(3);
+    }
+    
+    @Test
+    public void SplitMTest1() throws Exception {
+        SplitMTest(1);
+    }
+    
+    @Test
+    public void SplitMTest2() throws Exception {
+        SplitMTest(2);
+    }
+    
+    @Test
+    public void SplitMTest3() throws Exception {
+        SplitMTest(3);
+    }
+
     
 }

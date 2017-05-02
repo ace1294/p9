@@ -5,28 +5,22 @@
  */
 package gamma;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import basicConnector.Connector;
-import basicConnector.WriteEnd;
-import basicConnector.ReadEnd;
-import gammaSupport.BMap;
-import gammaSupport.Relation;
-import gammaSupport.ThreadList;
-import gammaSupport.Tuple;
+import basicConnector.*;
+import gammaSupport.*;
 
 /**
  *
  * @author Jason
  */
 public class Bloom extends Thread {
-    private WriteEnd outA;
-    private WriteEnd outM;
-    private ReadEnd  readIn;
-    private BMap mapStore;
-    private int joinKey;
-    Bloom (Connector out1, Connector out2, Connector in, int jKey) {
+    
+    private final WriteEnd outA;
+    private final WriteEnd outM;
+    private final ReadEnd  readIn;
+    private final BMap mapStore;
+    private final int joinKey;
+    
+    public Bloom (Connector out1, Connector out2, Connector in, int jKey) {
     	this.mapStore = BMap.makeBMap();
     	
     	this.outA = out1.getWriteEnd();
@@ -37,12 +31,16 @@ public class Bloom extends Thread {
     	this.readIn = in.getReadEnd();
     	
     	ThreadList.add(this);
-    	
     }
     
+    /*
+    computes a bloom filter, as in notes.  Observe the icon in the middle of the 
+    class: the box has a record stream input (on the left) and a record stream 
+    output on the right, and also a bitmap output (red).
+    */
+    @Override
     public void run () {
         try {
-            
             Tuple temp = readIn.getNextTuple();
             while(true) {
             	mapStore.setValue(temp.get(joinKey), true);
@@ -57,7 +55,7 @@ public class Bloom extends Thread {
             outM.close();
         }
         catch (Exception e){
-            Logger.getLogger(HJoin.class.getName()).log(Level.SEVERE, null, e);
+            ReportError.msg(this.getClass().getName() + " " + e);
         }
     }	
     
