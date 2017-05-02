@@ -28,11 +28,11 @@ public class BloomTests {
         ThreadList.init();
         Connector recordStream = new Connector("in1");
         ReadRelation r1 = new ReadRelation(in, recordStream);
-        Connector aP = new Connector("aP");
-        Connector mP = new Connector("mP");
-        Bloom b = new Bloom(recordStream, aP, mP, 0);
-        Sink sTups = new Sink(aP);
-        PrintMap pMap = new PrintMap(mP);
+        Connector streamOutput = new Connector("streamOutput");
+        Connector mapOutput = new Connector("mapOutput");
+        Bloom b = new Bloom(recordStream, 0, streamOutput, mapOutput);
+        Sink sTups = new Sink(streamOutput);
+        PrintMap pMap = new PrintMap(mapOutput);
         
         ThreadList.run(pMap);
         
@@ -50,11 +50,11 @@ public class BloomTests {
         ThreadList.init();
         Connector recordStream = new Connector("in1");
         ReadRelation r1 = new ReadRelation(in, recordStream);
-        Connector aP = new Connector("aP");
-        Connector mP = new Connector("mP");
-        Bloom b = new Bloom(recordStream, aP, mP, 0);
-        Print pTups = new Print(aP);
-        Sink sMap = new Sink(mP);
+        Connector streamOutput = new Connector("streamOutput");
+        Connector mapOutput = new Connector("mapOuput");
+        Bloom b = new Bloom(recordStream, 0, streamOutput, mapOutput);
+        Print pTups = new Print(streamOutput);
+        Sink sMap = new Sink(mapOutput);
         
         ThreadList.run(pTups);
 

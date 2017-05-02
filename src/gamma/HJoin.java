@@ -7,10 +7,7 @@ package gamma;
 
 import basicConnector.*;
 import gammaSupport.*;
-import java.io.File;
 import java.util.Hashtable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -18,21 +15,20 @@ import java.util.logging.Logger;
  */
 public class HJoin extends Thread {
     
-    
-    private final ReadEnd in1ReadEnd;
-    private final ReadEnd in2ReadEnd;
+    private final ReadEnd inReadEnd1;
+    private final ReadEnd inReadEnd2;
     private final WriteEnd outWriteEnd;
     private final int joinKey1;
     private final int joinKey2;
     
-    private Relation relationValue;
+    private final Relation relationValue;
     
     private final Hashtable<String, Tuple> table;
     
-    public HJoin(Connector in1, Connector in2, int jKey1, int jKey2, Connector out) {
+    public HJoin (Connector in1, Connector in2, int jKey1, int jKey2, Connector out) {
         
-        this.in1ReadEnd = in1.getReadEnd();
-        this.in2ReadEnd = in2.getReadEnd();
+        this.inReadEnd1 = in1.getReadEnd();
+        this.inReadEnd2 = in2.getReadEnd();
         this.joinKey1 = jKey1;
         this.joinKey2 = jKey2;
         this.outWriteEnd = out.getWriteEnd();
@@ -56,14 +52,14 @@ public class HJoin extends Thread {
         try {
             
             // Read all of input 1 into table
-            Tuple t1 = this.in1ReadEnd.getNextTuple();
+            Tuple t1 = this.inReadEnd1.getNextTuple();
             while(t1 != null){
                 table.put(t1.get(this.joinKey1), t1);
-                t1 = this.in1ReadEnd.getNextTuple();
+                t1 = this.inReadEnd1.getNextTuple();
             }
             
             // Read all of input 2
-            Tuple t2 = this.in2ReadEnd.getNextTuple();
+            Tuple t2 = this.inReadEnd2.getNextTuple();
             while(t2 != null){
                 t1 = table.get(t2.get(this.joinKey2));
                 
@@ -72,7 +68,7 @@ public class HJoin extends Thread {
                     Tuple t_out = Tuple.join(t1, t2, this.joinKey1, this.joinKey2);
                     this.outWriteEnd.putNextTuple(t_out);
                 }
-                t2  = this.in2ReadEnd.getNextTuple();
+                t2  = this.inReadEnd2.getNextTuple();
             }
             this.outWriteEnd.close();
         }

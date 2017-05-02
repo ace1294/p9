@@ -14,21 +14,22 @@ import gammaSupport.*;
  */
 public class Bloom extends Thread {
     
-    private final WriteEnd outA;
-    private final WriteEnd outM;
-    private final ReadEnd  readIn;
+    private final ReadEnd  inReadEnd;
+    private final WriteEnd outWriteEndStream;
+    private final WriteEnd outWriteEndBitMap;
     private final BMap mapStore;
     private final int joinKey;
     
-    public Bloom (Connector out1, Connector out2, Connector in, int jKey) {
-    	this.mapStore = BMap.makeBMap();
+    public Bloom (Connector in, int jKey, Connector outStream, Connector outBitMap) {
+        this.inReadEnd = in.getReadEnd();
     	
-    	this.outA = out1.getWriteEnd();
-    	this.outM = out2.getWriteEnd();
-    	this.outA.setRelation(out1.getRelation());
-    	this.outM.setRelation(Relation.dummy);
+    	this.outWriteEndStream = outStream.getWriteEnd();
+        this.outWriteEndStream.setRelation(outStream.getRelation());
+    	this.outWriteEndBitMap = outBitMap.getWriteEnd();
+        this.outWriteEndBitMap.setRelation(Relation.dummy);
+        
     	this.joinKey = jKey;
-    	this.readIn = in.getReadEnd();
+        this.mapStore = BMap.makeBMap();
     	
     	ThreadList.add(this);
     }
@@ -41,18 +42,17 @@ public class Bloom extends Thread {
     @Override
     public void run () {
         try {
-            Tuple temp = readIn.getNextTuple();
-            while(true) {
-            	mapStore.setValue(temp.get(joinKey), true);
-            	outA.putNextTuple(temp);
-            	if((temp = readIn.getNextTuple()) == null)
-            		break;
+            Tuple tuple = this.inReadEnd.getNextTuple();
+            while(tuple != null) {
+            	this.mapStore.setValue(tuple.get(this.joinKey), true);
+            	this.outWriteEndStream.putNextTuple(tuple);
+            	tuple = this.inReadEnd.getNextTuple();
             }
             
-            outM.putNextString(mapStore.getBloomFilter());
+            this.outWriteEndBitMap.putNextString(this.mapStore.getBloomFilter());
             
-            outA.close();
-            outM.close();
+            this.outWriteEndStream.close();
+            this.outWriteEndBitMap.close();
         }
         catch (Exception e){
             ReportError.msg(this.getClass().getName() + " " + e);

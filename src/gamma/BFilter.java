@@ -5,55 +5,54 @@
  */
 package gamma;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import basicConnector.Connector;
-import basicConnector.ReadEnd;
-import basicConnector.WriteEnd;
-import gammaSupport.BMap;
-import gammaSupport.ThreadList;
-import gammaSupport.Tuple;
+import basicConnector.*;
+import gammaSupport.*;
 
 /**
  *
  * @author Jason
  */
 public class BFilter extends Thread {
-    private final WriteEnd outWriteEnd;
-    private final ReadEnd inB;
-    private final ReadEnd inM;
+    
+    private final ReadEnd inReadEndBitMap;
+    private final ReadEnd inReadEndB;
     private final int joinKey;
+    private final WriteEnd outWriteEnd;
+    
     private BMap mapStore;
     
-    BFilter(Connector in1, Connector in2, int jKey, Connector out) throws Exception {
-    	this.joinKey = jKey;
+    BFilter (Connector inBitMap, Connector inB, int jKey, Connector out) throws Exception {
+    	this.inReadEndBitMap = inBitMap.getReadEnd();
+        this.inReadEndB = inB.getReadEnd();
+        this.joinKey = jKey;
     	this.outWriteEnd = out.getWriteEnd();
-    	this.inB = in1.getReadEnd();
-        this.inM = in2.getReadEnd();
         
-        out.setRelation(in2.getRelation());
+        out.setRelation(inB.getRelation());
         
         ThreadList.add(this);
     }
     
+    /*
+    read bit map M
+    read each tuple of B, hash its join key: if corresponding bit in M is not set 
+    discard tuple as it will never join with A tuples
+    else output tuple
+    */
     @Override
     public void run() {
     	try {
-            this.mapStore = BMap.makeBMap(this.inM.getNextString());
-            Tuple t = this.inB.getNextTuple();
-            while(true){
-                if(this.mapStore.getValue(t.get(this.joinKey))){
-                    this.outWriteEnd.putNextTuple(t);
+            this.mapStore = BMap.makeBMap(this.inReadEndBitMap.getNextString());
+            Tuple tuple = this.inReadEndB.getNextTuple();
+            while(tuple != null){
+                if(this.mapStore.getValue(tuple.get(this.joinKey))){
+                    this.outWriteEnd.putNextTuple(tuple);
                 }
-                t = this.inB.getNextTuple();
-                if(t == null)
-                	break;
+                tuple = this.inReadEndB.getNextTuple();
             }
             this.outWriteEnd.close();
         }
         catch (Exception e) {
-            Logger.getLogger(HJoin.class.getName()).log(Level.SEVERE, null, e);
+            ReportError.msg(this.getClass().getName() + " " + e);
         }
     }
     
