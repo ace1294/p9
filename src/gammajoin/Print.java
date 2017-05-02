@@ -19,7 +19,7 @@ public class Print extends Thread {
     
     public Print(Connector con) {
         this.inReadEnd = con.getReadEnd();
-        
+      
         ThreadList.add(this);
     }
     
