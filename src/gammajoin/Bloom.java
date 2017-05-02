@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 import basicConnector.Connector;
 import basicConnector.WriteEnd;
 import basicConnector.ReadEnd;
-import gammaJoin.HJoin;
 import gammaSupport.BMap;
 import gammaSupport.Relation;
 import gammaSupport.ThreadList;
@@ -24,7 +23,7 @@ import gammaSupport.Tuple;
 public class Bloom extends Thread {
     private WriteEnd outA;
     private WriteEnd outM;
-    private ReadEnd  in;
+    private ReadEnd  readIn;
     private BMap mapStore;
     private int joinKey;
     Bloom (Connector out1, Connector out2, Connector in, int jKey) {
@@ -35,7 +34,7 @@ public class Bloom extends Thread {
     	this.outA.setRelation(out1.getRelation());
     	this.outM.setRelation(Relation.dummy);
     	this.joinKey = jKey;
-    	this.in = in.getReadEnd();
+    	this.readIn = in.getReadEnd();
     	
     	ThreadList.add(this);
     	
@@ -44,11 +43,11 @@ public class Bloom extends Thread {
     public void run () {
         try {
             
-            Tuple temp = in.getNextTuple();
+            Tuple temp = readIn.getNextTuple();
             while(true) {
             	mapStore.setValue(temp.get(joinKey), true);
             	outA.putNextTuple(temp);
-            	if((temp = in.getNextTuple())  == null)
+            	if((temp = readIn.getNextTuple()) == null)
             		break;
             }
             
