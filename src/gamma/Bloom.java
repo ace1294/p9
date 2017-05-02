@@ -24,7 +24,7 @@ public class Bloom extends Thread {
         this.inReadEnd = in.getReadEnd();
     	
     	this.outWriteEndStream = outStream.getWriteEnd();
-        this.outWriteEndStream.setRelation(outStream.getRelation());
+        this.outWriteEndStream.setRelation(in.getRelation());
     	this.outWriteEndBitMap = outBitMap.getWriteEnd();
         this.outWriteEndBitMap.setRelation(Relation.dummy);
         
