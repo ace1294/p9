@@ -3,19 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gammajoin;
+package gamma;
 
 /**
  *
  * @author Jason
  */
-public class BFilter extends Thread {
+public class Bloom extends Thread {
     
-    BFilter() {
-        
-    }
-    
-    public void run() {
+    Bloom () {
         
     }
     

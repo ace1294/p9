@@ -3,17 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gammajoin;
-import basicConnector.Connector;
-import basicConnector.WriteEnd;
-import gammaSupport.Relation;
-import gammaSupport.ThreadList;
+package gamma;
+
+import basicConnector.*;
+import gammaSupport.*;
 import java.util.StringTokenizer;
-import gammaSupport.Tuple;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.util.logging.*;
+import java.io.*;
 
 /**
  *
@@ -22,7 +17,7 @@ import java.util.logging.*;
 public class ReadRelation extends Thread {
     
     private BufferedReader inReader;
-    private WriteEnd outWriteEnd;
+    private final WriteEnd outWriteEnd;
     private Relation r;
     
     public ReadRelation(String fileName, Connector con) throws Exception {
@@ -68,7 +63,7 @@ public class ReadRelation extends Thread {
             }
             this.outWriteEnd.close();
         }catch (Exception e) {
-            Logger.getLogger(ReadRelation.class.getName()).log(Level.SEVERE, null, e);
+            ReportError.msg(this.getClass().getName() + " " + e);
         }
     }
     

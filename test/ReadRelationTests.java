@@ -4,9 +4,10 @@
  * and open the template in the editor.
  */
 
+import gamma.ReadRelation;
 import RegTest.Utility;
-import gammajoin.*;
 import basicConnector.*;
+import gamma.*;
 import gammaSupport.*;
 import org.junit.Test;
 
@@ -17,97 +18,32 @@ import org.junit.Test;
 public class ReadRelationTests {
     
     @Test
-    public void clientTuplesTest() throws Exception {
-        ThreadList.init();
+    public void ReadRelationClientTest () throws Exception{
+        String in = "tables/client.txt";
+        String correct = "correctOutput/clientTuplesReadTest.txt";
         
-        Connector c = new Connector("test_connector");
-        ReadRelation r = new ReadRelation("client.txt", c);
-        r.run();
-        c.verifyRelation();
-        ReadEnd readEnd = r.getReadEnd();
         Utility.redirectStdOut("out.txt");
-        System.out.println(readEnd.getNextString());
-        System.out.println(readEnd.getNextString());
-        System.out.println(readEnd.getNextString());
-        System.out.println(readEnd.getNextString());
-        Utility.validate("out.txt", "CorrectOutput/clientTuples.txt",true);
+        ThreadList.init();
+
+        Connector read_print = new Connector("read_print");
+        ReadRelation read = new ReadRelation(in, read_print);
+        Print print = new Print(read_print);
+        ThreadList.run(print);
+        Utility.validate("out.txt", correct, false);
     }
     
     @Test
-    public void viewingTuplesTest() throws Exception {
-        ThreadList.init();
+    public void ReadRelationViewingTest () throws Exception{
+        String in = "tables/viewing.txt";
+        String correct = "correctOutput/viewingTuplesReadTest.txt";
         
-        Connector c = new Connector("test_connector");
-        ReadRelation r = new ReadRelation("viewing.txt", c);
-        r.run();
-        c.verifyRelation();
-        ReadEnd readEnd = r.getReadEnd();
         Utility.redirectStdOut("out.txt");
-        System.out.println(readEnd.getNextString());
-        System.out.println(readEnd.getNextString());
-        System.out.println(readEnd.getNextString());
-        System.out.println(readEnd.getNextString());
-        System.out.println(readEnd.getNextString());
-        Utility.validate("out.txt", "CorrectOutput/viewingTuples.txt",true);
-    }
-    
-    @Test
-    public void ordersTuplesTest() throws Exception {
         ThreadList.init();
-        
-        Connector c = new Connector("test_connector");
-        ReadRelation r = new ReadRelation("orders.txt", c);
-        r.run();
-        c.verifyRelation();
-        ReadEnd readEnd = r.getReadEnd();
-        Utility.redirectStdOut("out.txt");
-        System.out.println(readEnd.getNextString());
-        System.out.println(readEnd.getNextString());
-        System.out.println(readEnd.getNextString());
-        System.out.println(readEnd.getNextString());
-        Utility.validate("out.txt", "CorrectOutput/ordersTuples.txt",true);
-    }
-    
-    @Test
-    public void partsTuplesTest() throws Exception {
-        ThreadList.init();
-        
-        Connector c = new Connector("test_connector");
-        ReadRelation r = new ReadRelation("parts.txt", c);
-        r.run();
-        c.verifyRelation();
-        ReadEnd readEnd = r.getReadEnd();
-        Utility.redirectStdOut("out.txt");
-        System.out.println(readEnd.getNextString());
-        System.out.println(readEnd.getNextString());
-        System.out.println(readEnd.getNextString());
-        System.out.println(readEnd.getNextString());
-        System.out.println(readEnd.getNextString());
-        System.out.println(readEnd.getNextString());
-        System.out.println(readEnd.getNextString());
-        System.out.println(readEnd.getNextString());
-        Utility.validate("out.txt", "CorrectOutput/partsTuples.txt",true);
-    }
-    
-    @Test
-    public void odetailsTuplesTest() throws Exception {
-        ThreadList.init();
-        
-        Connector c = new Connector("test_connector");
-        ReadRelation r = new ReadRelation("odetails.txt", c);
-        r.run();
-        c.verifyRelation();
-        ReadEnd readEnd = r.getReadEnd();
-        Utility.redirectStdOut("out.txt");
-        System.out.println(readEnd.getNextString());
-        System.out.println(readEnd.getNextString());
-        System.out.println(readEnd.getNextString());
-        System.out.println(readEnd.getNextString());
-        System.out.println(readEnd.getNextString());
-        System.out.println(readEnd.getNextString());
-        System.out.println(readEnd.getNextString());
-        System.out.println(readEnd.getNextString());
-        System.out.println(readEnd.getNextString());
-        Utility.validate("out.txt", "CorrectOutput/odetailsTuples.txt",true);
-    }
+
+        Connector read_print = new Connector("read_print");
+        ReadRelation read = new ReadRelation(in, read_print);
+        Print print = new Print(read_print);
+        ThreadList.run(print);
+        Utility.validate("out.txt", correct, false);
+    }    
 }

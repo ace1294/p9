@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gammajoin;
+package gamma;
 
 import basicConnector.*;
 import gammaSupport.*;
@@ -19,15 +19,15 @@ import java.util.logging.Logger;
 public class HJoin extends Thread {
     
     
-    private ReadEnd in1ReadEnd;
-    private ReadEnd in2ReadEnd;
-    private WriteEnd outWriteEnd;
-    private int joinKey1;
-    private int joinKey2;
+    private final ReadEnd in1ReadEnd;
+    private final ReadEnd in2ReadEnd;
+    private final WriteEnd outWriteEnd;
+    private final int joinKey1;
+    private final int joinKey2;
     
-    private Relation r;
+    private final Relation r;
     
-    private Hashtable<String, Tuple> table;
+    private final Hashtable<String, Tuple> table;
     
     public HJoin(Connector in1, Connector in2, int jKey1, int jKey2, Connector out) {
         
@@ -78,8 +78,8 @@ public class HJoin extends Thread {
             }
             this.outWriteEnd.close();
         }
-        catch (Exception ex) {
-            Logger.getLogger(HJoin.class.getName()).log(Level.SEVERE, null, ex);
+        catch (Exception e) {
+            ReportError.msg(this.getClass().getName() + " " + e);
         } 
     }
     
