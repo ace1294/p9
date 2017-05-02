@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 import basicConnector.Connector;
 import basicConnector.ReadEnd;
 import basicConnector.WriteEnd;
-import gammaJoin.HJoin;
 import gammaSupport.BMap;
 import gammaSupport.ThreadList;
 import gammaSupport.Tuple;
@@ -27,7 +26,7 @@ public class BFilter extends Thread {
     private int joinKey;
     private BMap mapStore;
     
-    BFilter(Connector in1, Connector in2, Connector out, int jKey) throws Exception {
+    BFilter(Connector in1, Connector in2, int jKey, Connector out) throws Exception {
     	this.joinKey = jKey;
     	this.out = out.getWriteEnd();
     	this.inB = in1.getReadEnd();
