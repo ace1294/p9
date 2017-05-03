@@ -19,33 +19,33 @@ public class ReadRelationTests {
     
     @Test
     public void ReadRelationClientTest () throws Exception{
-        String in = GammaConstants.tablesPath + "client.txt";
-        String correct = GammaConstants.correctOutputPath + "clientTuplesReadTest.txt";
-        String test = GammaConstants.testOutputPath + "readClientTest.txt";
+        String inputPath = GammaConstants.tablesPath + "client.txt";
+        String correctPath = GammaConstants.correctOutputPath + "clientTuplesReadTest.txt";
+        String testPath = GammaConstants.testOutputPath + "readClientTest.txt";
         
-        Utility.redirectStdOut(test);
+        Utility.redirectStdOut(testPath);
         ThreadList.init();
 
         Connector read_print = new Connector("read_print");
-        ReadRelation read = new ReadRelation(in, read_print);
+        ReadRelation read = new ReadRelation(inputPath, read_print);
         Print print = new Print(read_print);
         ThreadList.run(print);
-        Utility.validate(test, correct, false);
+        Utility.validate(testPath, correctPath, false);
     }
     
     @Test
     public void ReadRelationViewingTest () throws Exception {
-        String in = GammaConstants.tablesPath + "viewing.txt";
-        String correct = GammaConstants.correctOutputPath + "viewingTuplesReadTest.txt";
-        String test = GammaConstants.testOutputPath + "readViewingTest.txt";
+        String inputPath = GammaConstants.tablesPath + "viewing.txt";
+        String correctPath = GammaConstants.correctOutputPath + "viewingTuplesReadTest.txt";
+        String testPath = GammaConstants.testOutputPath + "readViewingTest.txt";
         
-        Utility.redirectStdOut(test);
+        Utility.redirectStdOut(testPath);
         ThreadList.init();
 
         Connector read_print = new Connector("read_print");
-        ReadRelation read = new ReadRelation(in, read_print);
+        ReadRelation read = new ReadRelation(inputPath, read_print);
         Print print = new Print(read_print);
         ThreadList.run(print);
-        Utility.validate(test, correct, false);
+        Utility.validate(testPath, correctPath, false);
     }    
 }

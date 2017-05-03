@@ -18,16 +18,16 @@ import org.junit.Test;
 public class BloomTests {
     
     @Test
-    public void BloomTestStream () throws Exception {
-        String in  = GammaConstants.tablesPath + "client.txt";
-        String correct = GammaConstants.correctOutputPath + "bloomOutStream.txt";
-        String test = GammaConstants.testOutputPath + "bloomOutStream.txt";
+    public void BloomViewingTestStream () throws Exception {
+        String inputPath  = GammaConstants.tablesPath + "viewing.txt";
+        String correctPath = GammaConstants.correctOutputPath + "bloomViewingOutStream.txt";
+        String testPath = GammaConstants.testOutputPath + "bloomViewingOutStream.txt";
         
-        Utility.redirectStdOut(test);
+        Utility.redirectStdOut(testPath);
         
         ThreadList.init();
-        Connector recordStream = new Connector("in1");
-        ReadRelation r1 = new ReadRelation(in, recordStream);
+        Connector recordStream = new Connector("input");
+        ReadRelation r1 = new ReadRelation(inputPath, recordStream);
         Connector streamOutput = new Connector("streamOutput");
         Connector mapOutput = new Connector("mapOuput");
         Bloom b = new Bloom(recordStream, 0, streamOutput, mapOutput);
@@ -36,20 +36,20 @@ public class BloomTests {
         
         ThreadList.run(pTups);
 
-        Utility.validate(test, correct,false);
+        Utility.validate(testPath, correctPath, false);
     }
     
     @Test
-    public void BloomTestBitMap () throws Exception {
-        String in  = GammaConstants.tablesPath + "client.txt";
-        String correct = GammaConstants.correctOutputPath + "bloomOutMap.txt";
-        String test = GammaConstants.testOutputPath + "bloomOutMap.txt";
+    public void BloomViewingTestBitMap () throws Exception {
+        String inputPath  = GammaConstants.tablesPath + "viewing.txt";
+        String correctPath = GammaConstants.correctOutputPath + "bloomViewingOutMap.txt";
+        String testPath = GammaConstants.testOutputPath + "bloomViewingOutMap.txt";
         
-        Utility.redirectStdOut(test);
+        Utility.redirectStdOut(testPath);
         
         ThreadList.init();
-        Connector recordStream = new Connector("in1");
-        ReadRelation r1 = new ReadRelation(in, recordStream);
+        Connector recordStream = new Connector("input");
+        ReadRelation r1 = new ReadRelation(inputPath, recordStream);
         Connector streamOutput = new Connector("streamOutput");
         Connector mapOutput = new Connector("mapOutput");
         Bloom b = new Bloom(recordStream, 0, streamOutput, mapOutput);
@@ -58,6 +58,6 @@ public class BloomTests {
         
         ThreadList.run(pMap);
         
-        Utility.validate(test, correct,false);
+        Utility.validate(testPath, correctPath, false);
     }
 }

@@ -5,9 +5,9 @@ import gammaSupport.*;
 
 public class HSplit extends Thread {
     
-    private ReadEnd inReadEnd;
-    private WriteEnd[] outWriteEnds;
-    private int joinKey;
+    private final ReadEnd inReadEnd;
+    private final WriteEnd[] outWriteEnds;
+    private final int joinKey;
     
     public HSplit (Connector inputArray, Connector[] outputArray, int joinKey) {
     	this.inReadEnd = inputArray.getReadEnd();

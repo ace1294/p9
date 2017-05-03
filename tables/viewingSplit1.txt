@@ -1,0 +1,3 @@
+CLIENTNO PROPERTYNO VIEWDATE                  KOMMENT              
+-------- ---------- ------------------------- -------------------- 
+CR56     PG4        26-MAY-04                 _                 

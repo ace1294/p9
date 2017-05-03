@@ -1,7 +1,5 @@
 
-import gamma.PrintMap;
-import gamma.Sink;
-import gamma.SplitM;
+import gamma.*;
 import RegTest.Utility;
 import basicConnector.*;
 import gammaSupport.*;
@@ -19,49 +17,14 @@ import org.junit.Test;
  */
 public class SplitMTests {
     
-    public void SplitMTest(int i) throws Exception {
-        String correct = GammaConstants.correctOutputPath + "splitMOut" + i + ".txt";
-        String test = GammaConstants.testOutputPath + "splitMOut" + i + ".txt";
-        
-        Utility.redirectStdOut(test);
-        ThreadList.init();
-
-        /*
-        ttttttt
-        fffffff
-        tftftft
-        ttffttf
-        */
-        String bmap = "tttttttffffffftftftftttffttf";
-        
-        Connector in = new Connector("input");
-        in.setRelation(Relation.dummy);
-        in.getWriteEnd().putNextString(bmap);
-        Connector[] outs = new Connector[4];
-        outs[0] = new Connector("out0");
-        outs[1] = new Connector("out1");
-        outs[2] = new Connector("out2");
-        outs[3] = new Connector("out3");
-        
-        SplitM hsplit = new SplitM(in, outs);
-        
-        Sink s0 = new Sink(outs[0]);
-        Sink s1 = new Sink(outs[1]);
-        Sink s2 = new Sink(outs[2]);
-        Sink s3 = new Sink(outs[3]);
-        
-        PrintMap p = new PrintMap(outs[i]);
-        ThreadList.run(p);
-
-        Utility.validate(test, correct,false);
-    }
+    /*
+    Splits a bitmap into 4 distinct bitmaps so we need to test
+    that each of the 4 bitmaps are correct
+    */
     
     @Test
     public void SplitMTest0() throws Exception {
         SplitMTest(0);
-        SplitMTest(1);
-        SplitMTest(2);
-        SplitMTest(3);
     }
     
     @Test
@@ -78,6 +41,45 @@ public class SplitMTests {
     public void SplitMTest3() throws Exception {
         SplitMTest(3);
     }
+    
+    public void SplitMTest(int i) throws Exception {
+        String correct = GammaConstants.correctOutputPath + "splitMOut" + i + ".txt";
+        String test = GammaConstants.testOutputPath + "splitMOut" + i + ".txt";
+        
+        Utility.redirectStdOut(test);
+        ThreadList.init();
 
+        /*
+        ttttttt
+        fffffff
+        tftftft
+        ttffttf
+        */
+        String bmap = "tttttttffffffftftftftttffttf";
+        
+        Connector inputConnector = new Connector("input");
+        inputConnector.setRelation(Relation.dummy);
+        inputConnector.getWriteEnd().putNextString(bmap);
+        Connector[] outputConnectors = new Connector[4];
+        outputConnectors[0] = new Connector("output0");
+        outputConnectors[1] = new Connector("output1");
+        outputConnectors[2] = new Connector("output2");
+        outputConnectors[3] = new Connector("output3");
+        
+        SplitM hsplit = new SplitM(inputConnector, outputConnectors);
+        
+        /*
+        4 bitmaps being split to
+        */
+        Sink s0 = new Sink(outputConnectors[0]);
+        Sink s1 = new Sink(outputConnectors[1]);
+        Sink s2 = new Sink(outputConnectors[2]);
+        Sink s3 = new Sink(outputConnectors[3]);
+                
+        PrintMap p = new PrintMap(outputConnectors[i]);
+        ThreadList.run(p);
+
+        Utility.validate(test, correct,false);
+    }
     
 }

@@ -50,18 +50,17 @@ public class HJoin extends Thread {
     @Override
     public void run() {
         try {
-            
             // Read all of input 1 into table
             Tuple t1 = this.inReadEnd1.getNextTuple();
-            while(t1 != null){
-                table.put(t1.get(this.joinKey1), t1);
+            while (t1 != null) {
+                this.table.put(t1.get(this.joinKey1), t1);
                 t1 = this.inReadEnd1.getNextTuple();
             }
             
             // Read all of input 2
             Tuple t2 = this.inReadEnd2.getNextTuple();
-            while(t2 != null){
-                t1 = table.get(t2.get(this.joinKey2));
+            while (t2 != null) {
+                t1 = this.table.get(t2.get(this.joinKey2));
                 
                 // If there's a match between join keys, output joined
                 if(t1 != null){
@@ -76,5 +75,4 @@ public class HJoin extends Thread {
             ReportError.msg(this.getClass().getName() + " " + e);
         } 
     }
-    
 }

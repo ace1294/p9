@@ -21,18 +21,18 @@ public class BFilter extends Thread {
     
     private BMap mapStore;
     
-    BFilter (Connector inBitMap, Connector inB, int jKey, Connector out) throws Exception {
+    public BFilter (Connector inBitMap, Connector inBStream, int jKey, Connector out) throws Exception {
     	this.inReadEndBitMap = inBitMap.getReadEnd();
-        this.inReadEndB = inB.getReadEnd();
+        this.inReadEndB = inBStream.getReadEnd();
         this.joinKey = jKey;
     	this.outWriteEnd = out.getWriteEnd();
         
-        out.setRelation(inB.getRelation());
+        out.setRelation(inBStream.getRelation());
         
         ThreadList.add(this);
     }
     
-    /*
+    /*s
     read bit map M
     read each tuple of B, hash its join key: if corresponding bit in M is not set 
     discard tuple as it will never join with A tuples
@@ -43,8 +43,8 @@ public class BFilter extends Thread {
     	try {
             this.mapStore = BMap.makeBMap(this.inReadEndBitMap.getNextString());
             Tuple tuple = this.inReadEndB.getNextTuple();
-            while(tuple != null){
-                if(this.mapStore.getValue(tuple.get(this.joinKey))){
+            while (tuple != null) {
+                if (this.mapStore.getValue(tuple.get(this.joinKey))) {
                     this.outWriteEnd.putNextTuple(tuple);
                 }
                 tuple = this.inReadEndB.getNextTuple();

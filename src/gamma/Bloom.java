@@ -38,19 +38,23 @@ public class Bloom extends Thread {
     computes a bloom filter, as in notes.  Observe the icon in the middle of the 
     class: the box has a record stream input (on the left) and a record stream 
     output on the right, and also a bitmap output (red).
+    
+    clear bit map M
+    read each A tuple, hash its join key, and mark corresponding bit in M
+    output each tuple A
+    after all A tuples read, output M
     */
     @Override
     public void run () {
         try {
             Tuple tuple = this.inReadEnd.getNextTuple();
-            while(tuple != null) {
+            while (tuple != null) {
             	this.mapStore.setValue(tuple.get(this.joinKey), true);
             	this.outWriteEndStream.putNextTuple(tuple);
             	tuple = this.inReadEnd.getNextTuple();
             }
             
             this.outWriteEndBitMap.putNextString(this.mapStore.getBloomFilter());
-            
             this.outWriteEndStream.close();
             this.outWriteEndBitMap.close();
         }
