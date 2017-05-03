@@ -18,29 +18,7 @@ import org.junit.Test;
 public class BloomTests {
     
     @Test
-    public void BloomTestM () throws Exception {
-        String in  = GammaConstants.tablesPath + "client.txt";
-        String correct = GammaConstants.correctOutputPath + "bloomOutMap.txt";
-        String test = GammaConstants.testOutputPath + "bloomOutMap.txt";
-        
-        Utility.redirectStdOut(test);
-        
-        ThreadList.init();
-        Connector recordStream = new Connector("in1");
-        ReadRelation r1 = new ReadRelation(in, recordStream);
-        Connector streamOutput = new Connector("streamOutput");
-        Connector mapOutput = new Connector("mapOutput");
-        Bloom b = new Bloom(recordStream, 0, streamOutput, mapOutput);
-        Sink sTups = new Sink(streamOutput);
-        PrintMap pMap = new PrintMap(mapOutput);
-        
-        ThreadList.run(pMap);
-        
-        Utility.validate(test, correct,false);
-    }
-
-    @Test
-    public void BloomTestA () throws Exception {
+    public void BloomTestStream () throws Exception {
         String in  = GammaConstants.tablesPath + "client.txt";
         String correct = GammaConstants.correctOutputPath + "bloomOutStream.txt";
         String test = GammaConstants.testOutputPath + "bloomOutStream.txt";
@@ -58,6 +36,28 @@ public class BloomTests {
         
         ThreadList.run(pTups);
 
+        Utility.validate(test, correct,false);
+    }
+    
+    @Test
+    public void BloomTestBitMap () throws Exception {
+        String in  = GammaConstants.tablesPath + "client.txt";
+        String correct = GammaConstants.correctOutputPath + "bloomOutMap.txt";
+        String test = GammaConstants.testOutputPath + "bloomOutMap.txt";
+        
+        Utility.redirectStdOut(test);
+        
+        ThreadList.init();
+        Connector recordStream = new Connector("in1");
+        ReadRelation r1 = new ReadRelation(in, recordStream);
+        Connector streamOutput = new Connector("streamOutput");
+        Connector mapOutput = new Connector("mapOutput");
+        Bloom b = new Bloom(recordStream, 0, streamOutput, mapOutput);
+        Sink sTups = new Sink(streamOutput);
+        PrintMap pMap = new PrintMap(mapOutput);
+        
+        ThreadList.run(pMap);
+        
         Utility.validate(test, correct,false);
     }
 }
