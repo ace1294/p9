@@ -43,11 +43,14 @@ public class BFilter extends Thread {
     	try {
             this.mapStore = BMap.makeBMap(this.inReadEndBitMap.getNextString());
             Tuple tuple = this.inReadEndB.getNextTuple();
+            int count = 0;
             while (tuple != null) {
+                System.out.println("Bstream value try to filter " + tuple.get(this.joinKey) + " Value from Map " + this.mapStore.getValue(tuple.get(this.joinKey)));
                 if (this.mapStore.getValue(tuple.get(this.joinKey))) {
                     this.outWriteEnd.putNextTuple(tuple);
                 }
                 tuple = this.inReadEndB.getNextTuple();
+                count++;
             }
             this.outWriteEnd.close();
         }

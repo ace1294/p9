@@ -17,19 +17,19 @@ import org.junit.Test;
 public class BFilterTests {
     
     public Print setupFilterViewingTest(String pathForBloom, String pathForFilter) throws Exception {
-        Connector c1 = new Connector("input1");
-        ReadRelation r1 = new ReadRelation(pathForBloom, c1);
-        Connector a_sink = new Connector("a_sink");
-        Connector m_filter = new Connector("m_filter");
-        Bloom b = new Bloom(c1, 1, a_sink, m_filter);
-        Sink sink_a = new Sink(a_sink);
+        Connector bloomInputCon = new Connector("bloomInputCon");
+        ReadRelation readForBloom = new ReadRelation(pathForBloom, bloomInputCon);
+        Connector sinkBloomTupleStream = new Connector("sinkBloomTupleStream");
+        Connector bitMapConnector = new Connector("bitMapConnector");
+        Bloom bloom = new Bloom(bloomInputCon, 0, sinkBloomTupleStream, bitMapConnector);
+        Sink sinkAStream = new Sink(sinkBloomTupleStream);
 
-        Connector c2 = new Connector("input2");
-        ReadRelation r2 = new ReadRelation(pathForFilter, c2);
-        Connector b_out = new Connector("b_out");
-        BFilter bfilter = new BFilter(m_filter, c2, 1, b_out);
+        Connector streamInputCon = new Connector("filterInputCon");
+        ReadRelation readFilter = new ReadRelation(pathForFilter, streamInputCon);
+        Connector bStreamOut = new Connector("bStreamOut");
+        BFilter bfilter = new BFilter(bitMapConnector, streamInputCon, 0, bStreamOut);
         
-        Print p = new Print(b_out);
+        Print p = new Print(bStreamOut);
         
         return p;
     }

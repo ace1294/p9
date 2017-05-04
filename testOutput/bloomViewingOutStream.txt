@@ -1,13 +1,18 @@
+Filling store with CR56
+Filling store with CR76
 CLIENTNO = CR56
 PROPERTYNO = PA14
 VIEWDATE = 24-MAY-04
 KOMMENT = too_small
 
+Filling store with CR56
 CLIENTNO = CR76
 PROPERTYNO = PG4
+Filling store with CR62
 VIEWDATE = 20-APR-04
 KOMMENT = too_remote
 
+Filling store with CR56
 CLIENTNO = CR56
 PROPERTYNO = PG4
 VIEWDATE = 26-MAY-04

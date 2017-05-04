@@ -49,6 +49,7 @@ public class Bloom extends Thread {
         try {
             Tuple tuple = this.inReadEnd.getNextTuple();
             while (tuple != null) {
+                System.out.println("Filling store with " + tuple.get(this.joinKey));
             	this.mapStore.setValue(tuple.get(this.joinKey), true);
             	this.outWriteEndStream.putNextTuple(tuple);
             	tuple = this.inReadEnd.getNextTuple();

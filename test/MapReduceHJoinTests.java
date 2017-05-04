@@ -3,6 +3,7 @@ import RegTest.Utility;
 import basicConnector.*;
 import gamma.*;
 import gammaSupport.*;
+import graphs.MapReduceHJoin;
 import org.junit.Test;
 
 /*
@@ -15,7 +16,7 @@ import org.junit.Test;
  *
  * @author Jason
  */
-public class HJoinTests {
+public class MapReduceHJoinTests {
     
     public void join(String r1name, String r2name, int jk1, int jk2) throws Exception {      
         System.out.println( "Joining " + r1name + " with " + r2name );
@@ -26,7 +27,7 @@ public class HJoinTests {
         Connector c2 = new Connector("input2");
         ReadRelation r2 = new ReadRelation(r2name, c2);
         Connector o = new Connector("output");
-        HJoin hj = new HJoin(c1, c2, jk1, jk2, o);
+        MapReduceHJoin hj = new MapReduceHJoin(c1, c2, jk1, jk2, o);
         Print p = new Print(o);
         ThreadList.run(p);
     }
