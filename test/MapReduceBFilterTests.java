@@ -36,13 +36,13 @@ public class MapReduceBFilterTests {
         ReadRelation readForBloom = new ReadRelation(inputPathForBloom, bloomInCon);
         Connector sinkAStreamCon = new Connector("sinkAStreamCon");
         Connector bitMapCon = new Connector("bitMapCon");
-        Bloom b = new Bloom(bloomInCon, 0, sinkAStreamCon, bitMapCon);
+        Bloom b = new Bloom(bloomInCon, 1, sinkAStreamCon, bitMapCon);
         Sink sink_a = new Sink(sinkAStreamCon);
 
         Connector bStreamCon = new Connector("bStreamCon");
         ReadRelation readForStream = new ReadRelation(inputPathForBStream, bStreamCon);
         Connector bFilterBOut = new Connector("bFilterBOut");
-        MapReduceBFilter bFilter = new MapReduceBFilter(bitMapCon, bStreamCon, 0, bFilterBOut);
+        MapReduceBFilter bFilter = new MapReduceBFilter(bitMapCon, bStreamCon, 1, bFilterBOut);
         
         Print p = new Print(bFilterBOut);
 
@@ -86,7 +86,7 @@ public class MapReduceBFilterTests {
     @Test
     public void MapReduceBFilterTestNoMatch () throws Exception {
         String inputPathForBloom  = GammaConstants.tablesPath + "viewing.txt";
-        String inputPathForBStream  = GammaConstants.tablesPath + "bFilterViewingNoMatch.txt";
+        String inputPathForBStream  = GammaConstants.tablesPath + "bFilterTestViewingNoMatch.txt";
         // This should just be bFilterViewingFullMatchOut.txt but since this is
         // threaded they get printed in a different order
         String correctPath = GammaConstants.correctOutputPath + "mrBFilterViewingNoMatchOut.txt";

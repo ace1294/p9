@@ -1,57 +1,15 @@
-Filling store with CR56
-Filling store with CR76
-Filling store with CR56
-Filling store with CR62
-Filling store with CR56
-Bstream value try to filter CR56 Value from Map true
-Bstream value try to filter CR76 Value from Map true
 CLIENTNO = CR56
 PROPERTYNO = PA14
 VIEWDATE = 24-MAY-04
 KOMMENT = too_small
 
-Bstream value try to filter PG3 Value from Map false
-CLIENTNO = CR76
-PROPERTYNO = PG24
-VIEWDATE = 20-APR-04
-KOMMENT = too_remote
-
-Bstream value try to filter PG9 Value from Map false
-Bstream value try to filter CR16 Value from Map false
-Bstream value try to filter CR17 Value from Map false
-Bstream value try to filter CR56 Value from Map true
-Bstream value try to filter CR56 Value from Map true
 CLIENTNO = CR56
-PROPERTYNO = PG94
-VIEWDATE = 28-APR-04
+PROPERTYNO = PG4
+VIEWDATE = 26-MAY-04
 KOMMENT = _
 
-Bstream value try to filter CR56 Value from Map true
-CLIENTNO = CR56
-PROPERTYNO = PG95
-VIEWDATE = 28-APR-04
-KOMMENT = _
-
-Bstream value try to filter CR56 Value from Map true
-CLIENTNO = CR56
-PROPERTYNO = PG96
-VIEWDATE = 28-APR-04
-KOMMENT = _
-
-Bstream value try to filter CR56 Value from Map true
-CLIENTNO = CR56
-PROPERTYNO = PG97
-VIEWDATE = 28-APR-04
-KOMMENT = _
-
-Bstream value try to filter CR56 Value from Map true
-CLIENTNO = CR56
-PROPERTYNO = PG98
-VIEWDATE = 28-APR-04
-KOMMENT = _
-
-CLIENTNO = CR56
-PROPERTYNO = PG99
-VIEWDATE = 28-APR-04
-KOMMENT = _
+CLIENTNO = CR62
+PROPERTYNO = PA14
+VIEWDATE = 14-MAY-04
+KOMMENT = no_dining_room
 

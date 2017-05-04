@@ -1,13 +1,3 @@
-Filling store with PA14
-Filling store with PG4
-Filling store with PG4
-Filling store with PA14
-Filling store with PG36
-Bstream value try to filter PA14 Value from Map true
-Bstream value try to filter PA14 Value from Map true
-Bstream value try to filter PG24 Value from Map true
-Bstream value try to filter PG30 Value from Map true
-Bstream value try to filter PG4 Value from Map true
 CLIENTNO = CR56
 PROPERTYNO = PA14
 VIEWDATE = 24-MAY-04
@@ -17,16 +7,6 @@ CLIENTNO = CR62
 PROPERTYNO = PA14
 VIEWDATE = 14-MAY-04
 KOMMENT = no_dining_room
-
-CLIENTNO = CR56
-PROPERTYNO = PG30
-VIEWDATE = 28-APR-04
-KOMMENT = _
-
-CLIENTNO = CR76
-PROPERTYNO = PG24
-VIEWDATE = 20-APR-04
-KOMMENT = too_remote
 
 CLIENTNO = CR56
 PROPERTYNO = PG4

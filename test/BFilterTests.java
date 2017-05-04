@@ -21,13 +21,13 @@ public class BFilterTests {
         ReadRelation readForBloom = new ReadRelation(pathForBloom, bloomInputCon);
         Connector sinkBloomTupleStream = new Connector("sinkBloomTupleStream");
         Connector bitMapConnector = new Connector("bitMapConnector");
-        Bloom bloom = new Bloom(bloomInputCon, 0, sinkBloomTupleStream, bitMapConnector);
+        Bloom bloom = new Bloom(bloomInputCon, 1, sinkBloomTupleStream, bitMapConnector);
         Sink sinkAStream = new Sink(sinkBloomTupleStream);
 
         Connector streamInputCon = new Connector("filterInputCon");
         ReadRelation readFilter = new ReadRelation(pathForFilter, streamInputCon);
         Connector bStreamOut = new Connector("bStreamOut");
-        BFilter bfilter = new BFilter(bitMapConnector, streamInputCon, 0, bStreamOut);
+        BFilter bfilter = new BFilter(bitMapConnector, streamInputCon, 1, bStreamOut);
         
         Print p = new Print(bStreamOut);
         

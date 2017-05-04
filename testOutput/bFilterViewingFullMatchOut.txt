@@ -1,25 +1,15 @@
-Filling store with CR56
-Filling store with CR76
-Filling store with CR56
-Filling store with CR62
-Filling store with CR56
-Bstream value try to filter CR56 Value from Map true
-Bstream value try to filter CR76 Value from Map true
 CLIENTNO = CR56
 PROPERTYNO = PA14
 VIEWDATE = 24-MAY-04
 KOMMENT = too_small
 
-Bstream value try to filter CR56 Value from Map true
 CLIENTNO = CR76
 PROPERTYNO = PG4
 VIEWDATE = 20-APR-04
 KOMMENT = too_remote
 
-Bstream value try to filter CR62 Value from Map true
 CLIENTNO = CR56
 PROPERTYNO = PG4
-Bstream value try to filter CR56 Value from Map true
 VIEWDATE = 26-MAY-04
 KOMMENT = _
 
