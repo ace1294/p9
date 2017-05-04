@@ -14,7 +14,7 @@ import org.junit.runners.Suite;
  * @author nathanpoag
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({BFilterTests.class, SplitMTests.class, HJoinTests.class, HSplitTests.class, BloomSimulatorTests.class, ReadRelationTests.class, MergeTests.class, MergeMTests.class, BloomTests.class, MapReduceBFilterTests.class, MapReduceBloomTests.class, MapReduceHJoinTests.class})
+@Suite.SuiteClasses({BFilterTests.class, SplitMTests.class, HJoinTests.class, HSplitTests.class, BloomSimulatorTests.class, ReadRelationTests.class, MergeTests.class, MergeMTests.class, BloomTests.class, MapReduceBFilterTests.class, MapReduceBloomTests.class, MapReduceHJoinTests.class, HJoinRefineWithBloomFiltersTests.class, GammaTests.class})
 public class RunTests {
 
     @BeforeClass
