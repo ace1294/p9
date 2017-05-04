@@ -19,8 +19,8 @@ import org.junit.Test;
 public class BloomSimulatorTests {
     @Test
     public void BloomSimulatorTestBitmap () throws Exception {
-        String correctPath = GammaConstants.correctOutputPath + "bloomViewingOutMap.txt";
-        String testPath = GammaConstants.correctOutputPath + "bloomViewingOutMap.txt";
+        String correctPath = GammaConstants.correctOutputPath + "bloomSimulatorOutMap.txt";
+        String testPath = GammaConstants.correctOutputPath + "bloomSimulatorOutMap.txt";
         
         Utility.redirectStdOut(testPath);
         ThreadList.init();
